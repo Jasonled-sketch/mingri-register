@@ -1137,43 +1137,36 @@ footer .f-copy { font-size: 0.75rem; opacity: 0.4; margin-top: 24px; }
     <div class="form-card reveal">
       <div id="formArea">
 
-        <!-- STEP 1：選人數 -->
-        <div id="step1">
-          <h3 style="font-family:'Noto Serif TC',serif;color:#003840;margin-bottom:20px;font-size:1.15rem;">① 先告訴我們有幾位參加？</h3>
+        <!-- 簡化單一表單 -->
+        <form id="regForm">
+          <h3 style="font-family:'Noto Serif TC',serif;color:#003840;margin-bottom:20px;font-size:1.15rem;">① 報名資訊</h3>
           <div class="form-grid">
             <div class="form-group">
+              <label>代表人姓名 <span class="req">*</span></label>
+              <input type="text" id="repName" placeholder="請輸入代表人真實姓名" required>
+            </div>
+            <div class="form-group">
+              <label>手機號碼 <span class="req">*</span></label>
+              <input type="tel" id="repPhone" placeholder="09xxxxxxxx" pattern="09[0-9]{8}" required>
+              <span class="hint">09 開頭，共 10 碼</span>
+            </div>
+            <div class="form-group">
               <label>大人幾位 <span class="req">*</span></label>
-              <select id="sel_adults">
-                <option value="">請選擇</option>
-                <option value="1">1 位</option>
-                <option value="2">2 位</option>
-                <option value="3">3 位</option>
-                <option value="4">4 位</option>
-                <option value="5">5 位</option>
-              </select>
+              <input type="number" id="adultCount" min="1" value="1" inputmode="numeric" required>
             </div>
             <div class="form-group">
               <label>小孩幾位 <span style="font-size:0.75rem;color:var(--mid);font-weight:500;">（18 歲以下）</span></label>
-              <select id="sel_children">
-                <option value="0">0 位（無）</option>
-                <option value="1">1 位</option>
-                <option value="2">2 位</option>
-                <option value="3">3 位</option>
-                <option value="4">4 位</option>
-                <option value="5">5 位</option>
-              </select>
+              <input type="number" id="childCount" min="0" value="0" inputmode="numeric">
+            </div>
+            <div class="form-group full">
+              <label>備註（選填）</label>
+              <textarea id="repNote" placeholder="特殊需求或說明" rows="2" style="width:100%;font-family:inherit;font-size:1rem;padding:12px 14px;border:1.5px solid #B2EBF2;border-radius:10px;background:#F7FBFC;resize:vertical;"></textarea>
             </div>
           </div>
-          <button type="button" id="btnConfirmCount" class="btn-submit" style="margin-top:16px;">確認人數，填寫資料 →</button>
-        </div>
-
-        <!-- STEP 2：動態表單 -->
-        <form id="regForm" style="display:none;">
-          <div id="dynamicFields"></div>
 
           <hr class="form-divider">
           <div class="privacy-box">
-            <p>本表單蒐集之個人資料（姓名、手機、出生年月日），僅供活動聯絡、保險申辦及緊急聯繫使用，不會提供予第三方。</p>
+            <p>本表單蒐集之個人資料（姓名、手機），僅供活動聯絡、保險申辦及緊急聯繫使用，不會提供予第三方。</p>
           </div>
           <div class="check-group">
             <input type="checkbox" id="chkPrivacy" required>
@@ -1196,7 +1189,7 @@ footer .f-copy { font-size: 0.75rem; opacity: 0.4; margin-top: 24px; }
       <div id="successScreen" style="display:none;padding:32px 16px;text-align:center;">
         <div style="font-size:3.5rem;margin-bottom:12px;">🎉</div>
         <h3 style="font-family:'Noto Serif TC',serif;color:#003840;font-size:1.4rem;margin-bottom:8px;">報名成功！</h3>
-        <p style="color:var(--mid);font-size:0.9rem;margin-bottom:24px;">以下是各位參加者的專屬編號，<strong>請截圖保存</strong></p>
+        <p style="color:var(--mid);font-size:0.9rem;margin-bottom:24px;">以下是您的報名編號，<strong>請截圖保存</strong></p>
         <div id="regList" style="margin-bottom:24px;"></div>
         <div style="background:linear-gradient(135deg,#00ACC1,#00BCD4);border-radius:16px;padding:20px 24px;color:#fff;text-align:left;">
           <p style="font-weight:700;margin-bottom:8px;">🪵 活動當天記得帶上截圖！</p>
@@ -1246,83 +1239,6 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 // ── 動態表單邏輯 ──────────────────────────────────
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbzXM8rczPk_zpNfuEQ300qqPRXxdtDo8smpfg232wfDM0Tmbx4HXOGknSLJdzonrzcWlw/exec';
 
-let adultCount = 0;
-let childCount = 0;
-
-// Step1：確認人數 → 產生動態欄位
-document.getElementById('btnConfirmCount').addEventListener('click', function() {
-  adultCount = parseInt(document.getElementById('sel_adults').value) || 0;
-  childCount = parseInt(document.getElementById('sel_children').value) || 0;
-  if (adultCount === 0) { alert('請選擇大人人數'); return; }
-
-  let html = '';
-  for (let i = 0; i < adultCount; i++) {
-    const isFirst = i === 0;
-    html += `
-    <div class="person-block" id="block_a${i}">
-      <div class="person-title">👤 大人 ${i+1}<span class="badge">大人</span></div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>姓名 <span class="req">*</span></label>
-          <input type="text" id="a${i}_name" placeholder="請輸入姓名" required>
-        </div>
-        <div class="form-group">
-          <label>出生年月日 <span class="req">*</span></label>
-          <input type="date" id="a${i}_bday" required>
-          <span class="hint">供團體保險申辦使用</span>
-        </div>
-        <div class="form-group ${isFirst ? 'full' : ''}">
-          <label>${isFirst ? '手機號碼 <span class="req">*</span>' : '手機號碼'}</label>
-          ${isFirst
-            ? `<input type="tel" id="a${i}_phone" placeholder="09xxxxxxxx" pattern="09[0-9]{8}" required>`
-            : `<input type="tel" id="a${i}_phone" placeholder="09xxxxxxxx" pattern="09[0-9]{8}">
-               <div class="same-phone-wrap">
-                 <input type="checkbox" id="a${i}_same" onchange="copySamePhone('a${i}_phone','a${i}_same')">
-                 <label for="a${i}_same">手機同大人 1</label>
-               </div>`
-          }
-        </div>
-      </div>
-    </div>`;
-  }
-
-  for (let i = 0; i < childCount; i++) {
-    html += `
-    <div class="person-block child" id="block_c${i}">
-      <div class="person-title">🧒 小孩 ${i+1}<span class="badge">18歲以下</span></div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>姓名 <span class="req">*</span></label>
-          <input type="text" id="c${i}_name" placeholder="請輸入姓名" required>
-        </div>
-        <div class="form-group">
-          <label>出生年月日 <span class="req">*</span></label>
-          <input type="date" id="c${i}_bday" required>
-          <span class="hint">供團體保險申辦使用</span>
-        </div>
-      </div>
-    </div>`;
-  }
-
-  document.getElementById('dynamicFields').innerHTML = html;
-  document.getElementById('step1').style.display = 'none';
-  document.getElementById('regForm').style.display = 'block';
-});
-
-// 手機同上
-function copySamePhone(targetId, checkId) {
-  const cb = document.getElementById(checkId);
-  const mainPhone = document.getElementById('a0_phone').value;
-  const target = document.getElementById(targetId);
-  if (cb.checked) {
-    target.value = mainPhone;
-    target.readOnly = true;
-  } else {
-    target.value = '';
-    target.readOnly = false;
-  }
-}
-
 // 取得流水號
 async function getRegNum() {
   try {
@@ -1334,38 +1250,22 @@ async function getRegNum() {
   }
 }
 
-// 送出表單
+// 送出表單（簡化版：一筆報名 = 一位代表人 + 總人數）
 document.getElementById('regForm').addEventListener('submit', async function(e) {
   e.preventDefault();
   const btn = this.querySelector('.btn-submit');
   btn.textContent = '資料處理中…';
   btn.disabled = true;
 
-  const smsConsent = document.getElementById('chkSMS').checked;
-  const mainPhone = document.getElementById('a0_phone').value;
+  const name        = document.getElementById('repName').value.trim();
+  const phone       = document.getElementById('repPhone').value.trim();
+  const adultCount  = parseInt(document.getElementById('adultCount').value) || 0;
+  const childCount  = parseInt(document.getElementById('childCount').value) || 0;
+  const note        = document.getElementById('repNote').value.trim();
+  const smsConsent  = document.getElementById('chkSMS').checked;
 
-  let persons = [];
-  let valid = true;
-
-  // 大人
-  for (let i = 0; i < adultCount; i++) {
-    const name = document.getElementById(`a${i}_name`).value.trim();
-    const bday = document.getElementById(`a${i}_bday`).value;
-    const phone = document.getElementById(`a${i}_phone`).value.trim() || mainPhone;
-    if (!name || !bday) { valid = false; break; }
-    persons.push({ role: `大人${i+1}`, name, bday, phone, type: 'adult' });
-  }
-
-  // 小孩
-  for (let i = 0; i < childCount; i++) {
-    const name = document.getElementById(`c${i}_name`).value.trim();
-    const bday = document.getElementById(`c${i}_bday`).value;
-    if (!name || !bday) { valid = false; break; }
-    persons.push({ role: `小孩${i+1}`, name, bday, phone: '', type: 'child' });
-  }
-
-  if (!valid) {
-    alert('請填寫所有必填欄位');
+  if (!name || !phone || adultCount < 1) {
+    alert('請填寫必填欄位（代表人姓名、手機，大人至少 1 位）');
     btn.textContent = '送出報名 🌊';
     btn.disabled = false;
     return;
@@ -1375,48 +1275,41 @@ document.getElementById('regForm').addEventListener('submit', async function(e) 
   const overlay = document.getElementById('loadingOverlay');
   const stepEl  = document.getElementById('loadingStep');
   overlay.classList.add('show');
+  stepEl.textContent = '正在產生報名編號…';
 
-  // 每人取一個流水號並送出
-  const results = [];
-  for (const p of persons) {
-    const idx = persons.indexOf(p);
-    stepEl.textContent = `正在處理 ${p.role}（${idx+1} / ${persons.length}）…`;
-    const regNum = await getRegNum();
-    const payload = {
-      regNum, name: p.name, phone: p.phone,
-      birthday: p.bday, role: p.role,
-      type: p.type, sms: smsConsent ? '同意' : '不同意',
-      note: ''
-    };
-    try {
-      await fetch(GAS_URL, {
-        method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'text/plain' },
-        body: JSON.stringify(payload)
-      });
-    } catch {}
-    results.push({ ...p, regNum });
-  }
+  const regNum = await getRegNum();
+  const totalPeople = adultCount + childCount;
+  const payload = {
+    regNum, name, phone,
+    birthday: '',
+    role: `代表人（大人 ${adultCount} + 小孩 ${childCount}）`,
+    type: 'group',
+    adultCount, childCount, totalPeople,
+    sms: smsConsent ? '同意' : '不同意',
+    note
+  };
+  try {
+    await fetch(GAS_URL, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify(payload)
+    });
+  } catch {}
 
   // 顯示成功畫面
-  let listHtml = '';
-  results.forEach(r => {
-    const isChild = r.type === 'child';
-    listHtml += `
-    <div class="reg-item ${isChild ? 'child-item' : ''}">
-      <div class="reg-role">${isChild ? '👧 小孩' : '👤 大人'} — ${r.role}</div>
-      <div class="reg-name">${r.name}</div>
-      <div class="reg-num">${r.regNum}</div>
+  const listHtml = `
+    <div class="reg-item">
+      <div class="reg-role">👤 代表人 — ${name}</div>
+      <div class="reg-name">大人 ${adultCount} 位${childCount > 0 ? ` ＋ 小孩 ${childCount} 位` : ''}（共 ${totalPeople} 人）</div>
+      <div class="reg-num">${regNum}</div>
     </div>`;
-  });
 
   document.getElementById('regList').innerHTML = listHtml;
   stepEl.textContent = '✅ 完成！';
   document.getElementById('loadingBar').style.width = '100%';
   await new Promise(r => setTimeout(r, 600));
   overlay.classList.remove('show');
-  document.getElementById('formArea').querySelector('#regForm').style.display = 'none';
-  document.getElementById('formArea').querySelector('#step1').style.display = 'none';
+  document.getElementById('regForm').style.display = 'none';
   document.getElementById('successScreen').style.display = 'block';
 });
 </script>
