@@ -53,17 +53,27 @@ nav {
   letter-spacing: 0.05em;
   display: flex; align-items: center;
 }
-.nav-brand img {
-  height: 96px;
-  width: auto;
+.nav-brand .logo-frame {
   display: block;
   background: #ffffff;
-  border-radius: 14px;
-  padding: 8px 16px;
+  border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0,0,0,0.18), 0 0 0 1px rgba(255,255,255,0.6);
+  overflow: hidden;
+  height: 100px;
+  /* 容器寬度由內部 img 決定 */
+}
+.nav-brand .logo-frame img {
+  display: block;
+  height: 100%;
+  width: auto;
+  transform: scale(1.45);
+  transform-origin: center;
+  /* 縮放後超出容器的透明邊距被 overflow:hidden 裁掉，
+     視覺上 logo 主體就會撐滿白底 */
 }
 @media (max-width: 600px) {
-  .nav-brand img { height: 72px; padding: 6px 12px; border-radius: 10px; }
+  .nav-brand .logo-frame { height: 76px; border-radius: 10px; }
+  .nav-brand .logo-frame img { transform: scale(1.4); }
 }
 
 .nav-links {
@@ -941,7 +951,7 @@ footer .f-copy { font-size: 0.75rem; opacity: 0.4; margin-top: 24px; }
 
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-brand" style="text-decoration:none;"><img src="logo.png" alt="明日淨好 Tomorrow Better"></a>
+  <a href="#hero" class="nav-brand" style="text-decoration:none;"><span class="logo-frame"><img src="logo.png" alt="明日淨好 Tomorrow Better"></span></a>
   <ul class="nav-links">
     <li><a href="#about">關於我們</a></li>
     <li><a href="#program">活動流程</a></li>
