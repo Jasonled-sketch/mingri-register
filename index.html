@@ -52,6 +52,15 @@ nav {
   color: #003330;
   letter-spacing: 0.05em;
   text-shadow: 0 1px 0 rgba(255,255,255,0.3);
+  display: flex; align-items: center;
+}
+.nav-brand img {
+  height: 44px;
+  width: auto;
+  display: block;
+}
+@media (max-width: 600px) {
+  .nav-brand img { height: 36px; }
 }
 
 .nav-links {
@@ -82,12 +91,11 @@ nav {
 @media (max-width: 768px) {
   .nav-links { display: none; }
   nav { padding: 12px 20px; }
-  /* HERO 手機置中 + 字級縮小避免英文被截斷 */
-  .hero-content { padding: 100px 24px 60px; text-align: center; }
-  .hero-title { font-size: clamp(2.2rem, 9vw, 3.5rem); word-break: keep-all; }
-  .hero-sub { letter-spacing: 0.04em; }
-  .hero-info-row { justify-content: center; }
-  .hero-btns { justify-content: center; }
+  /* hero 字級再縮小，並縮短上方留白 */
+  .hero-content { padding: 80px 20px 50px; }
+  .hero-title { font-size: clamp(1.8rem, 8vw, 3rem); }
+  .hero-sub { letter-spacing: 0.04em; font-size: 0.95rem; }
+  .hero-info-item { padding: 8px 14px; font-size: 0.85rem; }
 }
 
 /* ========== HERO ========== */
@@ -117,8 +125,9 @@ nav {
 .hero-content {
   position: relative; z-index: 2;
   max-width: 1100px; margin: 0 auto;
-  padding: 120px 40px 80px;
+  padding: 100px 24px 60px;
   color: #fff;
+  text-align: center;
 }
 
 .hero-badge {
@@ -137,13 +146,15 @@ nav {
 
 .hero-title {
   font-family: 'Noto Serif TC', serif;
-  font-size: clamp(3rem, 7vw, 6rem);
+  font-size: clamp(2rem, 6vw, 4.5rem);
   font-weight: 900;
-  line-height: 1.05;
+  line-height: 1.1;
   letter-spacing: -0.01em;
   margin-bottom: 16px;
   text-shadow: 0 3px 16px rgba(0,0,0,0.35), 0 1px 4px rgba(0,0,0,0.5);
   animation: fadeUp 0.8s ease 0.1s both;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
 }
 
 .hero-title span { color: var(--sunset-warm); }
@@ -160,6 +171,7 @@ nav {
 
 .hero-info-row {
   display: flex; flex-wrap: wrap; gap: 20px;
+  justify-content: center;
   margin-bottom: 40px;
   animation: fadeUp 0.8s ease 0.3s both;
 }
@@ -179,6 +191,7 @@ nav {
 
 .hero-btns {
   display: flex; gap: 16px; flex-wrap: wrap;
+  justify-content: center;
   animation: fadeUp 0.8s ease 0.4s both;
 }
 
@@ -581,7 +594,11 @@ section { padding: 80px 40px; }
 }
 
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-@media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .form-card { padding: 32px 24px; } }
+@media (max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .form-card { padding: 28px 20px; }
+  #register { padding: 60px 16px; }
+}
 
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-group.full { grid-column: 1 / -1; }
@@ -864,7 +881,7 @@ footer .f-copy { font-size: 0.75rem; opacity: 0.4; margin-top: 24px; }
 
 <!-- NAV -->
 <nav>
-  <div class="nav-brand">🌊 明日淨好</div>
+  <a href="#hero" class="nav-brand" style="text-decoration:none;"><img src="logo.jpg" alt="明日淨好 Tomorrow Better"></a>
   <ul class="nav-links">
     <li><a href="#about">關於我們</a></li>
     <li><a href="#program">活動流程</a></li>
@@ -1134,14 +1151,11 @@ footer .f-copy { font-size: 0.75rem; opacity: 0.4; margin-top: 24px; }
   </div>
 </section>
 
-<!-- PARKING INFO -->
-<div style="background: #FFF9C4; padding: 24px 32px; text-align: center; color: var(--earth); border-top: 3px solid #FFD600;">
-  <p style="font-family:'Noto Serif TC',serif; font-size: 1.05rem; font-weight: 700; margin-bottom: 10px;">🅿️ 停車資訊</p>
-  <p style="font-size: 0.92rem; line-height: 1.9; max-width: 720px; margin: 0 auto;">
-    <strong>A 停車場：天南宮</strong>　｜　<strong>B 停車場：彌陀漁會</strong><br>
-    <span style="font-size: 0.85rem; color: var(--mid);">活動當天請依現場指引停車，建議提前 20 分鐘到達</span><br>
-    <a href="https://maps.app.goo.gl/Caxq8K3C2UFpGkwf8" target="_blank" style="display:inline-block; margin-top:10px; padding:8px 20px; background: var(--ocean); color:#fff; border-radius:20px; text-decoration:none; font-size:0.88rem; font-weight:600;">🗺 打開地圖導航</a>
-  </p>
+<!-- PARKING / MAP -->
+<div style="background: #FFF9C4; padding: 32px 16px; text-align: center; color: var(--earth); border-top: 3px solid #FFD600;">
+  <p style="font-family:'Noto Serif TC',serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 6px;">🅿️ 停車與場地配置圖</p>
+  <p style="font-size: 0.88rem; color: var(--mid); margin-bottom: 18px;">活動當天請依現場指引停車・建議提前 20 分鐘到達</p>
+  <img src="parking-map.png" alt="淨灘活動區域規劃圖 - 停車場、集合地、淨灘範圍、植栽範圍" style="max-width: 1100px; width: 100%; height: auto; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.15);">
 </div>
 
 <!-- INFO BAR -->
