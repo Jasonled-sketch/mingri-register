@@ -146,26 +146,37 @@ nav {
 
 .hero-title {
   font-family: 'Noto Serif TC', serif;
-  font-size: clamp(2rem, 6vw, 4.5rem);
+  font-size: clamp(2.4rem, 7vw, 5rem);
   font-weight: 900;
   line-height: 1.1;
   letter-spacing: -0.01em;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   text-shadow: 0 3px 16px rgba(0,0,0,0.35), 0 1px 4px rgba(0,0,0,0.5);
   animation: fadeUp 0.8s ease 0.1s both;
   word-break: keep-all;
-  overflow-wrap: anywhere;
 }
 
-.hero-title span { color: var(--sunset-warm); }
+.hero-title > span:not(.hero-title-en) { color: var(--sunset-warm); }
+
+.hero-title-en {
+  display: block;
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.42em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin-top: 10px;
+  color: rgba(255,255,255,0.95);
+  white-space: nowrap;
+}
 
 .hero-sub {
-  font-size: clamp(1rem, 2.5vw, 1.3rem);
+  font-size: clamp(0.85rem, 2vw, 1.2rem);
   font-weight: 500;
   opacity: 1;
   text-shadow: 0 2px 8px rgba(0,0,0,0.4);
   margin-bottom: 36px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
   animation: fadeUp 0.8s ease 0.2s both;
 }
 
@@ -186,8 +197,8 @@ nav {
 }
 
 .hero-info-item .icon { font-size: 1.2rem; }
-.hero-info-item strong { display: block; font-size: 0.72rem; opacity: 0.75; letter-spacing: 0.06em; }
-.hero-info-item span { font-size: 0.95rem; font-weight: 600; }
+.hero-info-item strong { display: block; font-size: 0.72rem; opacity: 0.75; letter-spacing: 0.06em; white-space: nowrap; }
+.hero-info-item span { font-size: 0.95rem; font-weight: 600; white-space: nowrap; }
 
 .hero-btns {
   display: flex; gap: 16px; flex-wrap: wrap;
@@ -881,7 +892,7 @@ footer .f-copy { font-size: 0.75rem; opacity: 0.4; margin-top: 24px; }
 
 <!-- NAV -->
 <nav>
-  <a href="#hero" class="nav-brand" style="text-decoration:none;"><img src="logo.jpg" alt="明日淨好 Tomorrow Better"></a>
+  <a href="#hero" class="nav-brand" style="text-decoration:none;"><img src="logo.png" alt="明日淨好 Tomorrow Better"></a>
   <ul class="nav-links">
     <li><a href="#about">關於我們</a></li>
     <li><a href="#program">活動流程</a></li>
@@ -897,7 +908,7 @@ footer .f-copy { font-size: 0.75rem; opacity: 0.4; margin-top: 24px; }
   <div class="hero-overlay"></div>
   <div class="hero-content">
     <div class="hero-badge">✦ 第六屆 ｜ 2026 年度大行動</div>
-    <h1 class="hero-title">明日<span>淨好</span><br>Tomorrow<br>Better</h1>
+    <h1 class="hero-title">明日<span>淨好</span><span class="hero-title-en">Tomorrow Better</span></h1>
     <p class="hero-sub">為下一代，留下乾淨的海岸線</p>
     <div class="hero-info-row">
       <div class="hero-info-item">
